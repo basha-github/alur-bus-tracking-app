@@ -10,7 +10,7 @@ import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 @Component
-public class LocationWebSocketHandler extends TextWebSocketHandler {
+public class LocationWebSocketHandler_Single extends TextWebSocketHandler {
 	
 	private final List<WebSocketSession> sessions = new CopyOnWriteArrayList<>();
 
