@@ -51,17 +51,17 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
         // Parse JSON
         Map<String, Object> data = objectMapper.readValue(message.getPayload(), Map.class);
         String busId = (String) data.get("busId");
-        String typeVal = (String) data.get("type");
-        System.out.println(" typeVal....."+typeVal);
+        //String typeVal = (String) data.get("type");
+        //System.out.println(" typeVal....."+typeVal);
         
         System.out.println("before sending to Parent....busId--->"+busId);
 
         if (busId == null) return;
 
-        if (typeVal.contains("ping")) {
-            System.out.println("  returning!!!!!!!");
-            return;
-        }
+        //if (typeVal.contains("ping")) {
+          //  System.out.println("  returning!!!!!!!");
+           // return;
+        //}
         // Send only to parents of that bus
         List<WebSocketSession> parents = busSubscribers.get(busId);
 
