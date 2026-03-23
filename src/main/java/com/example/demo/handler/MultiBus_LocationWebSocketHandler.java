@@ -23,7 +23,9 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
     
    
 
-    private final Map<String, List<WebSocketSession>> adminSessions = new ConcurrentHashMap<>();
+    //private final Map<String, List<WebSocketSession>> adminSessions = new ConcurrentHashMap<>();
+    
+    private final List<WebSocketSession> adminSessions = new CopyOnWriteArrayList<>();
     
     
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -46,11 +48,9 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
             System.out.println("👨‍👩‍👧 Parent subscribed to bus: " + busId);
         }
         else if ("admin".equals(type)) {
-        	 System.out.println("for admin:::::::::::::::::UMAR RA:::::::::::;");
-        	adminSessions
-                    .computeIfAbsent(busId, k -> new CopyOnWriteArrayList<>())
-                    .add(session);
-            System.out.println("👨‍👩‍👧 Admin subscribed to bus: " + busId);
+        	 System.out.println("🖥️ Admin connected");
+
+        	    adminSessions.add(session);
         }
         
         
@@ -94,18 +94,11 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
         }// parent
         
         
-        List<WebSocketSession> admin = adminSessions.get(busId);
-        if (admin != null) {
-       	 System.out.println("Bus found for Admin !!!!!");
-           for (WebSocketSession eachBus : admin) {
-               if (eachBus.isOpen()) {
-               	 System.out.println("eachBus connection is opened!!!!!!!!!!!");
-               	eachBus.sendMessage(new TextMessage(message.getPayload()));
-                   System.out.println("successfully send meaasge---> for bus Id-->"+busId);
-                   System.out.println(new TextMessage(message.getPayload()));
-               }
-           }
-       }// parent
+        for (WebSocketSession admin : adminSessions) {
+            if (admin.isOpen()) {
+                admin.sendMessage(new TextMessage(message.getPayload()));
+            }
+        }
     }
 
     // ❌ DISCONNECT
@@ -118,7 +111,8 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
         // Remove from parent lists
         busSubscribers.values().forEach(list -> list.remove(session));
 
-        adminSessions.values().forEach(list -> list.remove(session));
+        adminSessions.remove(session);
+
 
         System.out.println("❌ Disconnected: " + session.getId());
     }
