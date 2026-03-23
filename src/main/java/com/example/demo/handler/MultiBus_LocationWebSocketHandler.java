@@ -51,6 +51,8 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
         // Parse JSON
         Map<String, Object> data = objectMapper.readValue(message.getPayload(), Map.class);
         String busId = (String) data.get("busId");
+        
+        System.out.println("before sending to Parent....busId--->"+busId);
 
         if (busId == null) return;
 
@@ -58,9 +60,13 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
         List<WebSocketSession> parents = busSubscribers.get(busId);
 
         if (parents != null) {
+        	 System.out.println("found parent!!!!!");
             for (WebSocketSession parent : parents) {
                 if (parent.isOpen()) {
+                	 System.out.println("parent connection is opened!!!!!!!!!!!");
                     parent.sendMessage(new TextMessage(message.getPayload()));
+                    System.out.println("successfully send meaasge--->");
+                    System.out.println(new TextMessage(message.getPayload()));
                 }
             }
         }
