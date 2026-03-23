@@ -21,8 +21,7 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
     private final Map<String, WebSocketSession> busSessions = new ConcurrentHashMap<>();
     private final Map<String, List<WebSocketSession>> busSubscribers = new ConcurrentHashMap<>();
     
-    //private final List<WebSocketSession> adminSessions = new CopyOnWriteArrayList<>();
-
+   
 
     private final Map<String, List<WebSocketSession>> adminSessions = new ConcurrentHashMap<>();
     
@@ -47,6 +46,7 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
             System.out.println("👨‍👩‍👧 Parent subscribed to bus: " + busId);
         }
         else if ("admin".equals(type)) {
+        	 System.out.println("for admin:::::::::::::::::UMAR RA:::::::::::;");
         	adminSessions
                     .computeIfAbsent(busId, k -> new CopyOnWriteArrayList<>())
                     .add(session);
