@@ -4,7 +4,7 @@ import java.net.URI;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
+//import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.springframework.stereotype.Component;
@@ -15,18 +15,12 @@ import org.springframework.web.socket.handler.TextWebSocketHandler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import static com.example.demo.session.manager.SessionManager.*;
+
 @Component
 public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
 
-    private final Map<String, WebSocketSession> busSessions = new ConcurrentHashMap<>();
-    private final Map<String, List<WebSocketSession>> busSubscribers = new ConcurrentHashMap<>();
-    
-   
-
-    //private final Map<String, List<WebSocketSession>> adminSessions = new ConcurrentHashMap<>();
-    
-    private final List<WebSocketSession> adminSessions = new CopyOnWriteArrayList<>();
-    
+       
     
     private final ObjectMapper objectMapper = new ObjectMapper();
 
