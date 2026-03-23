@@ -56,6 +56,9 @@ public class MultiBus_LocationWebSocketHandler extends TextWebSocketHandler {
 
         if (busId == null) return;
 
+        if (message.getPayload().contains("ping")) {
+            return;
+        }
         // Send only to parents of that bus
         List<WebSocketSession> parents = busSubscribers.get(busId);
 
